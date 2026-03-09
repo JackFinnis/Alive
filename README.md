@@ -1,8 +1,57 @@
-# Alive AR Experience
+# Alive
 
-Introducing Alive - a unique interactive AR experience for Apple Vision Pro. Make your living room come alive with realistic creatures that respond to your gestures, movement, and surroundings.
+An interactive AR experience for Apple Vision Pro. Make your living room come alive with realistic creatures that respond to your gestures, movement, and surroundings.
 
 https://jackfinnis.com/apps/alive
+
+![Aquarium](aquarium.jpeg)
+
+## Spaces
+
+### Aquarium
+Tap to spawn fish — clownfish, sardines, and yellow tangs school around your room using boid flocking. Reach 50 fish and a shark appears. Seaweed and starfish anchor to your walls and surfaces.
+
+### Cavern
+Spiders crawl across your walls and ceiling using pathfinding over spatial mesh surfaces. Hold out your hand and they'll climb onto it. Cobwebs break on contact. Tap to spawn ants.
+
+### Meadow
+Butterflies flutter through your space. Point to attract them to your finger. Clap to scatter them. Butterfly bushes bloom on your surfaces.
+
+## Architecture
+
+Built with RealityKit's **Entity Component System (ECS)** pattern:
+
+- **Components** — Pure data structs attached to entities (e.g. `FishComponent`, `SpiderComponent`)
+- **Systems** — Per-frame logic that queries entities by component (e.g. `FishSystem` runs boid flocking, `SpiderSystem` runs pathfinding)
+- **Spaces** — Immersive views that set up entities, providers, and systems
+
+Three ARKit providers feed real-world data into the ECS:
+- `HandProvider` — hand joint tracking, gesture detection (pointing, clapping, dropping)
+- `DeviceProvider` — headset world position
+- `MeshProvider` — spatial mesh anchors for environment understanding
+
+### Creature AI
+
+| Creature | Algorithm | Key Behaviors |
+|----------|-----------|---------------|
+| Fish | Boid flocking (cohesion, separation, alignment, boundary avoidance) | Schooling, obstacle avoidance |
+| Spiders | Graph-based pathfinding via RRT over mesh surfaces | Crawl on walls, climb onto hands |
+| Butterflies | Path-following flight | Respond to pointing gestures, scatter on clap |
+
+### Performance
+
+- `SpatialGrid` for O(1) spatial neighbor lookups
+- Entity recycling: furthest entities removed and respawned closer to the user
+- `File` enum caches loaded 3D models to avoid redundant I/O
+
+### Dependencies
+
+- [Swift Collections](https://github.com/apple/swift-collections) — `HeapModule` for pathfinding
+- [TelemetryDeck](https://telemetrydeck.com) — analytics
+
+## Contributing
+
+Contributions are welcome! Open an issue or submit a pull request.
 
 ## Acknowledgments
 
@@ -24,6 +73,3 @@ https://jackfinnis.com/apps/alive
 - [wjoojoo (Underwater)](https://freesound.org/people/wjoojoo/sounds/197751/)
 - [Sclolex (Cave)](https://freesound.org/people/Sclolex/sounds/177958/)
 - [Erablo42 (Forest)](https://freesound.org/people/Erablo42/sounds/661187/)
-
-### Packages
-- [Swift Collections](https://github.com/apple/swift-collections/blob/main/LICENSE.txt)
