@@ -51,7 +51,7 @@ Three ARKit providers feed real-world data into the ECS:
 
 ## Contributing
 
-Contributions are welcome! Open an issue or submit a pull request.
+Contributions are welcome! See [TODO.md](TODO.md) for a list of ideas and improvements. Pick one and open a pull request, or create an issue to discuss.
 
 ## Acknowledgments
 
