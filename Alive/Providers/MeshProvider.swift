@@ -26,7 +26,8 @@ class MeshProvider {
     func run() async throws {
         let water = try await ShaderGraphMaterial(named: "/Root/WaterMaterial", from: "mesh.usda", in: realityKitContentBundle)
         let sand = try await ShaderGraphMaterial(named: "/Root/SandMaterial", from: "mesh.usda", in: realityKitContentBundle)
-        materials = [sand]
+        let occlusion = OcclusionMaterial()
+        materials = [occlusion]
         
         try await session.run([provider])
         
