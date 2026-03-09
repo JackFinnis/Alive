@@ -1,0 +1,232 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.100.13)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["Cube", "SandMaterial", "WaterMaterial"]
+    def Material "WaterMaterial"
+    {
+        float inputs:Scale = 10 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-828.42426, 537.5098)
+                    int stackingOrderInSubgraph = 1487
+                }
+            }
+        )
+        float inputs:Speed = 0.5 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-701.23016, 659.6424)
+                    int stackingOrderInSubgraph = 1500
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/WaterMaterial/UnlitSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (442.57996, 662.34546)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 1295
+
+        def Shader "Multiply_4"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/WaterMaterial/Time.outputs:out>
+            float inputs:in2 = 0.5
+            float inputs:in2.connect = </Root/WaterMaterial.inputs:Speed>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-553.4194, 597.94366)
+            int ui:nodegraph:node:stackingOrder = 1498
+        }
+
+        def Shader "Position"
+        {
+            uniform token info:id = "ND_position_vector3"
+            string inputs:space = "world"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-846.1914, 477.10574)
+            int ui:nodegraph:node:stackingOrder = 1490
+        }
+
+        def Shader "Separate3"
+        {
+            uniform token info:id = "ND_separate3_vector3"
+            float3 inputs:in.connect = </Root/WaterMaterial/Multiply_3.outputs:out>
+            float outputs:outx
+            float outputs:outy
+            float outputs:outz
+            float2 ui:nodegraph:node:pos = (-596.67584, 525.80585)
+            int ui:nodegraph:node:stackingOrder = 1415
+        }
+
+        def Shader "Power"
+        {
+            uniform token info:id = "ND_power_float"
+            float inputs:in1.connect = </Root/WaterMaterial/WorleyNoise3D.outputs:out>
+            float inputs:in2 = 5
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-38.682716, 594.5388)
+            int ui:nodegraph:node:stackingOrder = 1381
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/WaterMaterial/Power.outputs:out>
+            float inputs:in2 = 0.01
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (91.672195, 603.39575)
+            int ui:nodegraph:node:stackingOrder = 1331
+        }
+
+        def Shader "UnlitSurface"
+        {
+            uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+            bool inputs:applyPostProcessToneMap = 0
+            color3f inputs:color
+            bool inputs:hasPremultipliedAlpha = 0
+            float inputs:opacity.connect = </Root/WaterMaterial/Multiply.outputs:out>
+            float inputs:opacityThreshold
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (235.83878, 608.62524)
+            int ui:nodegraph:node:stackingOrder = 1295
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:applyPostProcessToneMap"]
+        }
+
+        def Shader "Multiply_3"
+        {
+            uniform token info:id = "ND_multiply_vector3FA"
+            prepend float3 inputs:in1.connect = </Root/WaterMaterial/Position.outputs:out>
+            float inputs:in2.connect = </Root/WaterMaterial.inputs:Scale>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-724.3373, 527.4169)
+            int ui:nodegraph:node:stackingOrder = 1460
+        }
+
+        def Shader "WorleyNoise3D"
+        {
+            uniform token info:id = "ND_worleynoise3d_float"
+            float inputs:jitter = 1
+            float inputs:jitter.connect = None
+            float3 inputs:position.connect = </Root/WaterMaterial/Combine3.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-233.09155, 539.81384)
+            int ui:nodegraph:node:stackingOrder = 1381
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = []
+        }
+
+        def Shader "Combine3"
+        {
+            uniform token info:id = "ND_combine3_vector3"
+            float inputs:in1.connect = </Root/WaterMaterial/Separate3.outputs:outx>
+            float inputs:in2.connect = </Root/WaterMaterial/Separate3.outputs:outz>
+            float inputs:in3.connect = </Root/WaterMaterial/Multiply_4.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-417.0412, 544.516)
+            int ui:nodegraph:node:stackingOrder = 1410
+        }
+
+        def Shader "Time"
+        {
+            uniform token info:id = "ND_time_float"
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-707.781, 590.22754)
+            int ui:nodegraph:node:stackingOrder = 1496
+        }
+    }
+
+    def Cube "Cube" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0)
+        }
+    )
+    {
+        rel material:binding = </Root/SandMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Material "SandMaterial"
+    {
+        token outputs:mtlx:surface.connect = </Root/SandMaterial/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (288.4675, 80.30196)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 163
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            color3f inputs:diffuseColor = (0.5945259, 0.3338568, 0.084830016) (
+                colorSpace = "lin_srgb"
+            )
+            float inputs:metallic
+            float3 inputs:normal = (0, 0, 1)
+            float inputs:opacity.connect = </Root/SandMaterial/Step.outputs:out>
+            float inputs:roughness = 1
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (47.709316, 18.1349)
+            int ui:nodegraph:node:stackingOrder = 172
+        }
+
+        def Shader "WorldPosition"
+        {
+            uniform token info:id = "ND_position_vector3"
+            string inputs:space = "world"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-725.0155, -9.556965)
+            int ui:nodegraph:node:stackingOrder = 127
+        }
+
+        def Shader "Separate3"
+        {
+            uniform token info:id = "ND_separate3_vector3"
+            float3 inputs:in.connect = </Root/SandMaterial/WorldPosition.outputs:out>
+            float outputs:outx
+            float outputs:outy
+            float outputs:outz
+            float2 ui:nodegraph:node:pos = (-520.5587, -10.381956)
+            int ui:nodegraph:node:stackingOrder = 127
+        }
+
+        def Shader "Step"
+        {
+            uniform token info:id = "ND_realitykit_step_float"
+            float inputs:edge = -0.1
+            float inputs:in.connect = </Root/SandMaterial/Multiply.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-202.4496, -6.2122245)
+            int ui:nodegraph:node:stackingOrder = 176
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/SandMaterial/Separate3.outputs:outy>
+            float inputs:in2 = -1
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-351.59634, -1.6252062)
+            int ui:nodegraph:node:stackingOrder = 131
+        }
+
+        def Shader "ViewDirection"
+        {
+            uniform token info:id = "ND_realitykit_viewdirection_vector3"
+            float2 ui:nodegraph:node:pos = (-747.95374, 174.75911)
+            int ui:nodegraph:node:stackingOrder = 182
+        }
+    }
+}
+

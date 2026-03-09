@@ -1,0 +1,96 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.100.13)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["Sphere", "BubbleMaterial", "BubbleMaterial"]
+    def Sphere "Sphere" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/BubbleMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.01
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Material "BubbleMaterial"
+    {
+        token outputs:mtlx:surface.connect = </Root/BubbleMaterial/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex.connect = </Root/BubbleMaterial/GeometryModifier.outputs:out>
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (431.78598, 225.3911)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 2442
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            float inputs:clearcoatRoughness = 0
+            color3f inputs:diffuseColor = (0, 0, 0) (
+                colorSpace = "srgb_displayp3"
+            )
+            color3f inputs:emissiveColor = (0, 0, 0) (
+                colorSpace = "srgb_displayp3"
+            )
+            float inputs:ior = 0
+            float inputs:metallic = 0
+            float3 inputs:normal = (0, 0, 1)
+            float inputs:occlusion = 1
+            float inputs:opacity = 0.1
+            float inputs:roughness = 0
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (166.63217, 56.29164)
+            int ui:nodegraph:node:stackingOrder = 2516
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["Advanced"]
+        }
+
+        def Shader "Noise3D"
+        {
+            uniform token info:id = "ND_noise3d_vector3FA"
+            float inputs:amplitude = 0.1
+            float inputs:amplitude.connect = None
+            float inputs:pivot
+            float3 inputs:position.connect = </Root/BubbleMaterial/Position.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-156.37073, 258.8052)
+            int ui:nodegraph:node:stackingOrder = 2461
+        }
+
+        def Shader "Position"
+        {
+            uniform token info:id = "ND_position_vector3"
+            string inputs:space = "world"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-382.96753, 292.7973)
+            int ui:nodegraph:node:stackingOrder = 2456
+        }
+
+        def Shader "GeometryModifier"
+        {
+            uniform token info:id = "ND_realitykit_geometrymodifier_2_0_vertexshader"
+            color4f inputs:color
+            float3 inputs:modelPositionOffset.connect = </Root/BubbleMaterial/Noise3D.outputs:out>
+            float3 inputs:normal
+            float4 inputs:uv3
+            float4 inputs:uv4
+            float4 inputs:uv5
+            float4 inputs:uv6
+            float4 inputs:uv7
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (132.46085, 395.40045)
+            int ui:nodegraph:node:stackingOrder = 2452
+        }
+    }
+}
+

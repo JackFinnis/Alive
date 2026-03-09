@@ -1,0 +1,210 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (494.8.1)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["Cylinder", "Cone", "Sphere", "CobwebMaterial", "Sphere_2"]
+    def Material "CobwebMaterial"
+    {
+        float inputs:Length = 1 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-597.6875, 130.10156)
+                    int stackingOrderInSubgraph = 960
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/CobwebMaterial/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex.connect = </Root/CobwebMaterial/GeometryModifier.outputs:out>
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (335.25, 100.5)
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            color3f inputs:diffuseColor = (1, 1, 1) (
+                colorSpace = "lin_srgb"
+            )
+            float inputs:metallic = 1
+            float3 inputs:normal
+            float inputs:opacity = 1
+            float inputs:roughness = 0
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (98.01953, -124.91406)
+            int ui:nodegraph:node:stackingOrder = 954
+        }
+
+        def Shader "Position"
+        {
+            uniform token info:id = "ND_position_vector3"
+            string inputs:space = "model"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-810.46094, 49.101562)
+            int ui:nodegraph:node:stackingOrder = 852
+        }
+
+        def Shader "Separate3"
+        {
+            uniform token info:id = "ND_separate3_vector3"
+            float3 inputs:in.connect = </Root/CobwebMaterial/Position.outputs:out>
+            float outputs:outx
+            float outputs:outy
+            float outputs:outz
+            float2 ui:nodegraph:node:pos = (-629.7383, 48.9375)
+            int ui:nodegraph:node:stackingOrder = 803
+        }
+
+        def Shader "Power"
+        {
+            uniform token info:id = "ND_power_float"
+            float inputs:in1 = 2
+            float inputs:in1.connect = </Root/CobwebMaterial/Separate3.outputs:outy>
+            float inputs:in2 = 2
+            float inputs:in2.connect = None
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-444.39453, 62.734375)
+            int ui:nodegraph:node:stackingOrder = 851
+        }
+
+        def Shader "GeometryModifier"
+        {
+            uniform token info:id = "ND_realitykit_geometrymodifier_2_0_vertexshader"
+            color4f inputs:color
+            float3 inputs:modelPositionOffset.connect = </Root/CobwebMaterial/Combine3.outputs:out>
+            float3 inputs:normal
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (63.304688, 158.0664)
+            int ui:nodegraph:node:stackingOrder = 96
+        }
+
+        def Shader "Combine3"
+        {
+            uniform token info:id = "ND_combine3_vector3"
+            float inputs:in1.connect = None
+            float inputs:in2.connect = None
+            float inputs:in3.connect = </Root/CobwebMaterial/Multiply.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-177.59766, 71.55469)
+            int ui:nodegraph:node:stackingOrder = 488
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/CobwebMaterial/Power.outputs:out>
+            float inputs:in2 = -25000
+            float inputs:in2.connect = </Root/CobwebMaterial/Multiply_1.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-308.28516, 72.26953)
+            int ui:nodegraph:node:stackingOrder = 902
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in2", "outputs:out"]
+        }
+
+        def Shader "Multiply_1"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/CobwebMaterial.inputs:Length>
+            float inputs:in2 = 5000000
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-413.6172, 131.66797)
+            int ui:nodegraph:node:stackingOrder = 961
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in2"]
+        }
+    }
+
+    def Cylinder "Cylinder" (
+        active = false
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        customData = {
+            float3 rotationEulerHint = (0.78539807, 0, 0)
+        }
+    )
+    {
+        uniform token axis = "Y"
+        double height = 10
+        rel material:binding = </Root/CobwebMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.01
+        quatf xformOp:orient = (0.92387956, 0.3826834, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Cone "Cone" (
+        active = false
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 2
+        rel material:binding = </Root/CobwebMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 1
+    }
+
+    def Sphere "Sphere" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0)
+        }
+    )
+    {
+        rel material:binding = </Root/CobwebMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.0002
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 2500, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            prepend token outputs:surface.connect = </Root/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Sphere "Sphere_2" (
+        active = false
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Sphere_2/DefaultMaterial>
+        double radius = 0.5
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:mtlx:surface
+            token outputs:realitykit:vertex
+            token outputs:surface.connect = </Root/Sphere_2/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                float inputs:clearcoatRoughness = 0
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:ior = 1
+                float inputs:occlusion = 1
+                float inputs:opacity = 0.00001
+                float inputs:roughness = 1
+                token outputs:surface
+            }
+        }
+    }
+}
+
