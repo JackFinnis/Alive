@@ -88,6 +88,11 @@ class Model {
 // implement shared experiences with friedns in the same and different rooms
 // fix WaterMaterial underwater caustics so it works in real time without lagging
 // apply different textures based on the surface classification of the mesh
+// add more creatures with new movement algorithms in existing/new spaces: hummingbird, bees, caterpillars
+// make ants move dynamically so spiders must recalculate paths in real time
+// vines/growth shader - vines grow up walls and start to flower
+// use SharePlay so friends can see your creatures in real time
+// room-based experiences - put each space in a different room so you can walk around and dont have to exit the immersive space
 
 // - ask
 // GroundingShadowComponent doesnt work with OcclusionMaterial
