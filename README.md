@@ -1,4 +1,4 @@
-# Alive
+# Alive AR Experience
 
 Introducing Alive - a unique interactive AR experience for Apple Vision Pro. Make your living room come alive with realistic creatures that respond to your gestures, movement, and surroundings.
 
