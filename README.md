@@ -6,18 +6,18 @@ https://jackfinnis.com/apps/alive
 
 ![Aquarium](aquarium.jpeg)
 
-## Spaces
+## 🌍 Spaces
 
-### Aquarium
+### 🐟 Aquarium
 Tap to spawn fish — clownfish, sardines, and yellow tangs school around your room using boid flocking. Reach 50 fish and a shark appears. Seaweed and starfish anchor to your walls and surfaces.
 
-### Cavern
+### 🕷️ Cavern
 Spiders crawl across your walls and ceiling using pathfinding over spatial mesh surfaces. Hold out your hand and they'll climb onto it. Cobwebs break on contact. Tap to spawn ants.
 
-### Meadow
+### 🦋 Meadow
 Butterflies flutter through your space. Point to attract them to your finger. Clap to scatter them. Butterfly bushes bloom on your surfaces.
 
-## Architecture
+## 🏗️ Architecture
 
 Built with RealityKit's **Entity Component System (ECS)** pattern:
 
@@ -30,30 +30,31 @@ Three ARKit providers feed real-world data into the ECS:
 - `DeviceProvider` — headset world position
 - `MeshProvider` — spatial mesh anchors for environment understanding
 
-### Creature AI
+### 🧠 Creature Movement Algorithms
 
 | Creature | Algorithm | Key Behaviors |
 |----------|-----------|---------------|
-| Fish | Boid flocking (cohesion, separation, alignment, boundary avoidance) | Schooling, obstacle avoidance |
-| Spiders | Graph-based pathfinding via RRT over mesh surfaces | Crawl on walls, climb onto hands |
-| Butterflies | Path-following flight | Respond to pointing gestures, scatter on clap |
+| Fish | Boid flocking — cohesion, separation, alignment, boundary avoidance | Schooling, obstacle avoidance |
+| Shark | Seek steering — target selection, obstacle avoidance, scary entity repulsion | Appears at 50+ fish, chases them |
+| Spiders | RRT pathfinding — rapidly-exploring random tree over spatial mesh graph | Crawl on walls/ceiling, climb onto hands |
+| Butterflies | Waypoint path-following — sequential target pursuit with landing detection | Respond to pointing gestures, scatter on clap |
 
-### Performance
+### ⚡ Performance
 
 - `SpatialGrid` for O(1) spatial neighbor lookups
 - Entity recycling: furthest entities removed and respawned closer to the user
 - `File` enum caches loaded 3D models to avoid redundant I/O
 
-### Dependencies
+### 📦 Dependencies
 
 - [Swift Collections](https://github.com/apple/swift-collections) — `HeapModule` for pathfinding
 - [TelemetryDeck](https://telemetrydeck.com) — analytics
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! See [TODO.md](TODO.md) for a list of ideas and improvements. Pick one and open a pull request, or create an issue to discuss.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 ### Models
 - [Apple (Clownfish, Sardine, Yellow Tang, Starfish, Seaweed)](https://developer.apple.com/documentation/realitykit/building_an_immersive_experience_with_realitykit)
