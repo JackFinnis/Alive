@@ -1,3 +1,5 @@
+<img src="icon.png" width="80" height="80" alt="Alive icon">
+
 # Alive
 
 An interactive AR experience for Apple Vision Pro. Make your living room come alive with realistic creatures that respond to your gestures, movement, and surroundings.
