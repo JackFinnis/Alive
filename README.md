@@ -1,4 +1,6 @@
-<img src="icon.png" width="80" height="80" alt="Alive icon">
+<p align="center">
+  <img src="icon.png" width="128" height="128" alt="Alive icon">
+</p>
 
 # Alive
 
