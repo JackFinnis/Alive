@@ -12,7 +12,11 @@ https://jackfinnis.com/apps/alive
 
 ## ⚠️ Missing Assets
 
-3D models, audio files, and image assets are not included in this repository due to licensing restrictions. To build and run the app, you'll need these files placed in `Alive/Files/`, `*.rkassets`, and `*.xcassets`. Contact me at [jackfinnis.com](https://jackfinnis.com) if you'd like access.
+3D models and image assets are not included in this repository due to licensing restrictions. To build and run the app, email [jack@jackfinnis.com](mailto:jack@jackfinnis.com) for access to the asset files, then place them at:
+
+- `Alive/Files/`
+- `Alive/Resources/Assets.xcassets/`
+- `Packages/RealityKitContent/Sources/RealityKitContent/RealityKitContent.rkassets/`
 
 ## 🌍 Spaces
 
@@ -60,7 +64,11 @@ Three ARKit providers feed real-world data into the ECS:
 
 ## 🤝 Contributing
 
-Contributions are welcome! See [TODO.md](TODO.md) for a list of ideas and improvements. Pick one and open a pull request, or create an issue to discuss.
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) and [TODO.md](TODO.md) to get started.
+
+## 📄 Licence
+
+[MIT](LICENSE) — see [Acknowledgments](#-acknowledgments) for third-party asset licences.
 
 ## 🙏 Acknowledgments
 
